@@ -1,9 +1,9 @@
-import ViewMonth from "./components/calendar/view-month.tsx";
-import {useContext, useEffect} from "react";
-import {AppContext} from "./providers/app-provider.tsx";
+import { useContext, useEffect } from "react";
+import { AppContext } from "./providers/app-provider.tsx";
+import ReactCalendar from "./components/calendar/react-calendar.tsx";
 
 function App() {
-  const {setEvents} = useContext(AppContext);
+  const { setEvents } = useContext(AppContext);
 
   useEffect(() => {
     setEvents([
@@ -31,8 +31,8 @@ function App() {
   return (
     <main className='w-full h-screen bg-slate-900 text-white flex justify-center items-center flex-col px-4 md:px-8 lg:px-24'>
       <h1 className='text-4xl font-bold mb-8'>React Event Calendar</h1>
-      <div className='max-w-screen-lg w-full h-[600px]'>
-        <ViewMonth />
+      <div className='max-w-screen-lg w-full min-h-[700px] max-h-[900px] overflow-y-scroll rounded-md'>
+        <ReactCalendar />
       </div>
     </main>
   )

@@ -18,10 +18,17 @@ declare global {
     currentMonth: string;
     firstDayCurrentMonth: Date;
     daysCurrentMonth: Date[];
+    monthsCurrentYear: Date[];
     events: CalendarEvent[];
     currentView: 'year' | 'month' | 'week' | 'day';
+    togglePreviousDay: () => void;
+    toggleNextDay: () => void;
+    togglePreviousWeek: () => void;
+    toggleNextWeek: () => void;
     togglePreviousMonth: () => void;
     toggleNextMonth: () => void;
+    togglePreviousYear: () => void;
+    toggleNextYear: () => void;
     setSelectedDate: (date: Date) => void;
     setCurrentMonth: (date: string) => void;
     setCurrentView: (view: 'year' | 'month' | 'week' | 'day') => void;

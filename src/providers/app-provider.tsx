@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import {
   add,
-  eachDayOfInterval,
+  eachDayOfInterval, eachMonthOfInterval,
   endOfMonth,
   endOfWeek,
   format,
@@ -15,21 +15,7 @@ import {
   startOfWeek
 } from "date-fns";
 
-export const AppContext = createContext<AppContextValue>({
-  today: startOfToday(),
-  selectedDate: startOfToday(),
-  currentMonth: format(startOfToday(), 'MMM-yyyy'),
-  firstDayCurrentMonth: startOfToday(),
-  daysCurrentMonth: [],
-  events: [],
-  currentView: 'month',
-  togglePreviousMonth: () => {},
-  toggleNextMonth: () => {},
-  setSelectedDate: () => {},
-  setCurrentMonth: () => {},
-  setCurrentView: () => {},
-  setEvents: () => {},
-});
+export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const today = startOfToday();
@@ -42,16 +28,24 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     start: startOfWeek(firstDayCurrentMonth, { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(firstDayCurrentMonth), { weekStartsOn: 1 })
   })
+  const monthsCurrentYear = eachMonthOfInterval({
+    start: new Date(firstDayCurrentMonth.getFullYear(), 0, 1),
+    end: new Date(firstDayCurrentMonth.getFullYear(), 11, 31)
+  });
 
-  const togglePreviousMonth = useCallback(() => {
-    const firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
-    setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'));
+  const toggleDate = useCallback((amount: number, type: 'days' | 'weeks' | 'months' | 'years') => {
+    const firstDayNext = add(firstDayCurrentMonth, { [type]: amount });
+    setCurrentMonth(format(firstDayNext, 'MMM-yyyy'));
   }, [firstDayCurrentMonth]);
 
-  const toggleNextMonth = useCallback(() => {
-    const firstDayNextMonth = add(firstDayCurrentMonth, { months: 1 });
-    setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'));
-  }, [firstDayCurrentMonth]);
+  const togglePreviousDay = useCallback(() => toggleDate(-1, 'days'), [toggleDate]);
+  const toggleNextDay = useCallback(() => toggleDate(1, 'days'), [toggleDate]);
+  const togglePreviousWeek = useCallback(() => toggleDate(-1, 'weeks'), [toggleDate]);
+  const toggleNextWeek = useCallback(() => toggleDate(1, 'weeks'), [toggleDate]);
+  const togglePreviousMonth = useCallback(() => toggleDate(-1, 'months'), [toggleDate]);
+  const toggleNextMonth = useCallback(() => toggleDate(1, 'months'), [toggleDate]);
+  const togglePreviousYear = useCallback(() => toggleDate(-1, 'years'), [toggleDate]);
+  const toggleNextYear = useCallback(() => toggleDate(1, 'years'), [toggleDate]);
 
   const contextValue = useMemo(() => ({
     today,
@@ -59,10 +53,17 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     currentMonth,
     firstDayCurrentMonth,
     daysCurrentMonth,
+    monthsCurrentYear,
     events,
     currentView,
+    togglePreviousDay,
+    toggleNextDay,
+    togglePreviousWeek,
+    toggleNextWeek,
     togglePreviousMonth,
     toggleNextMonth,
+    togglePreviousYear,
+    toggleNextYear,
     setSelectedDate,
     setCurrentMonth,
     setCurrentView,
@@ -73,10 +74,17 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     currentMonth,
     firstDayCurrentMonth,
     daysCurrentMonth,
+    monthsCurrentYear,
     events,
     currentView,
+    togglePreviousDay,
+    toggleNextDay,
+    togglePreviousWeek,
+    toggleNextWeek,
     togglePreviousMonth,
     toggleNextMonth,
+    togglePreviousYear,
+    toggleNextYear,
     setSelectedDate,
     setCurrentMonth,
     setCurrentView,
