@@ -2,6 +2,7 @@ import React, {
   createContext,
   useCallback,
   useMemo,
+  useRef,
   useState
 } from 'react';
 import {
@@ -24,6 +25,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [currentView, setCurrentView] = useState<'year' | 'month' | 'week' | 'day'>('month');
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
+  const containerRef = useRef<HTMLDivElement>(null)
+  const containerNavRef = useRef<HTMLDivElement>(null)
+  const containerOffsetRef = useRef<HTMLDivElement>(null)
   const daysCurrentWeek = eachDayOfInterval({
     start: startOfWeek(selectedDate, { weekStartsOn: 1 }),
     end: endOfWeek(selectedDate, { weekStartsOn: 1 })
@@ -64,6 +68,19 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const toggleNextMonth = useCallback(() => toggleDate(1, 'months'), [toggleDate]);
   const toggleNextYear = useCallback(() => toggleDate(1, 'years'), [toggleDate]);
 
+  const calculateTrackPosition = useCallback(() => {
+    const currentMinute = new Date().getHours() * 60
+
+    if (containerRef.current === null || containerNavRef.current === null || containerOffsetRef.current === null) return;
+
+    containerRef.current.scrollTop = ((
+        containerRef.current.scrollHeight
+        - containerNavRef.current.offsetHeight
+        - containerOffsetRef.current.offsetHeight
+      ) * currentMinute)
+      / 1440
+  }, [containerRef, containerNavRef, containerOffsetRef])
+
   const contextValue = useMemo(() => ({
     today,
     selectedDate,
@@ -74,6 +91,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     monthsCurrentYear,
     events,
     currentView,
+    containerRef,
+    containerNavRef,
+    containerOffsetRef,
+    calculateTrackPosition,
     togglePreviousDay,
     toggleNextDay,
     togglePreviousWeek,
@@ -96,6 +117,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     monthsCurrentYear,
     events,
     currentView,
+    containerRef,
+    containerNavRef,
+    containerOffsetRef,
+    calculateTrackPosition,
     togglePreviousDay,
     toggleNextDay,
     togglePreviousWeek,

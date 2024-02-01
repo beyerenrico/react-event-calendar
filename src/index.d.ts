@@ -23,6 +23,10 @@ declare global {
     monthsCurrentYear: Date[];
     events: CalendarEvent[];
     currentView: 'year' | 'month' | 'week' | 'day';
+    containerRef: React.RefObject<HTMLDivElement>;
+    containerNavRef: React.RefObject<HTMLDivElement>;
+    containerOffsetRef: React.RefObject<HTMLDivElement>;
+    calculateTrackPosition: () => void;
     togglePreviousDay: () => void;
     toggleNextDay: () => void;
     togglePreviousWeek: () => void;

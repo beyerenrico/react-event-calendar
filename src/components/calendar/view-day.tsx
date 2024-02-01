@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useContext, useEffect} from "react";
 import {classNames, eventsForDay} from "../../helpers/utils.ts";
 import { AppContext } from "../../providers/app-provider.tsx";
 import { differenceInHours, format, isEqual } from "date-fns";
@@ -11,33 +11,25 @@ const ViewDay: React.FC = () => {
     selectedDate,
     daysCurrentWeek,
     events,
+    containerRef,
+    containerNavRef,
+    containerOffsetRef,
+    calculateTrackPosition,
     setSelectedDate,
     setCurrentMonth,
   } = useContext(AppContext);
-  const container = useRef<HTMLDivElement>(null)
-  const containerNav = useRef<HTMLDivElement>(null)
-  const containerOffset = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const currentMinute = new Date().getHours() * 60
-
-    if (container.current === null || containerNav.current === null || containerOffset.current === null) return
-
-    container.current.scrollTop = ((
-        container.current.scrollHeight
-        - containerNav.current.offsetHeight
-        - containerOffset.current.offsetHeight
-      ) * currentMinute)
-      / 1440
-  }, [])
+    calculateTrackPosition();
+  }, [calculateTrackPosition])
 
   return (
     <div className="flex h-full flex-col bg-gray-100 rounded-md">
       <CalendarHeader />
       <div className="isolate flex flex-auto overflow-hidden bg-white">
-        <div ref={container} className="flex flex-auto flex-col overflow-auto">
+        <div ref={containerRef} className="flex flex-auto flex-col overflow-auto">
           <div
-            ref={containerNav}
+            ref={containerNavRef}
             className="sticky top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
           >
             {daysCurrentWeek.map((day) => (
@@ -71,7 +63,7 @@ const ViewDay: React.FC = () => {
                 className="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100"
                 style={{ gridTemplateRows: 'repeat(48, minmax(3.5rem, 1fr))' }}
               >
-                <div ref={containerOffset} className="row-end-1 h-7"></div>
+                <div ref={containerOffsetRef} className="row-end-1 h-7"></div>
                 {Array.from({ length: 24 }).map((_, i) => (
                   <>
                     <div>
