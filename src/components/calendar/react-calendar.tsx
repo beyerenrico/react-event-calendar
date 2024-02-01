@@ -15,15 +15,15 @@ const ReactCalendar: React.FC<ReactCalendarProps> = ({ onAddEvent, onViewChange 
 
   switch (currentView) {
     case 'year':
-      return <ViewYear onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      return <ViewYear onViewChange={onViewChange} />;
     case 'month':
-      return <ViewMonth onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      return <ViewMonth onViewChange={onViewChange} />;
     case 'week':
       return <ViewWeek onAddEvent={onAddEvent} onViewChange={onViewChange} />;
     case 'day':
-      return <ViewDay onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      return <ViewDay />;
     default:
-      return <ViewMonth onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      return <ViewMonth onViewChange={onViewChange} />;
   }
 }
 
