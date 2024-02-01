@@ -11,19 +11,22 @@ function App() {
         id: '1',
         title: 'Comicon Düsseldorf',
         href: '#',
-        date: new Date('2024-01-27')
+        startDate: new Date('2024-01-27 06:00:00'),
+        endDate: new Date('2024-01-27 18:00:00')
       },
       {
         id: '2',
         title: 'Dokomi',
         href: '#',
-        date: new Date('2024-01-31')
+        startDate: new Date('2024-01-31 06:00:00'),
+        endDate: new Date('2024-01-31 14:00:00')
       },
       {
         id: '3',
         title: 'Kawaii Con',
         href: '#',
-        date: new Date('2024-01-31')
+        startDate: new Date('2024-01-31 15:00:00'),
+        endDate: new Date('2024-01-31 21:00:00')
       }
     ]);
   }, [setEvents]);

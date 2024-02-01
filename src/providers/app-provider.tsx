@@ -24,6 +24,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [currentView, setCurrentView] = useState<'year' | 'month' | 'week' | 'day'>('month');
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
+  const daysCurrentWeek = eachDayOfInterval({
+    start: startOfWeek(selectedDate, { weekStartsOn: 1 }),
+    end: endOfWeek(selectedDate, { weekStartsOn: 1 })
+  })
   const daysCurrentMonth = eachDayOfInterval({
     start: startOfWeek(firstDayCurrentMonth, { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(firstDayCurrentMonth), { weekStartsOn: 1 })
@@ -35,8 +39,21 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   const toggleDate = useCallback((amount: number, type: 'days' | 'weeks' | 'months' | 'years') => {
     const firstDayNext = add(firstDayCurrentMonth, { [type]: amount });
-    setCurrentMonth(format(firstDayNext, 'MMM-yyyy'));
-  }, [firstDayCurrentMonth]);
+    const nextDay = add(selectedDate, { [type]: amount });
+
+    switch (type) {
+      case 'days':
+        setSelectedDate(nextDay);
+        break;
+      case 'weeks':
+        setSelectedDate(add(selectedDate, { [type]: amount }));
+        break;
+      case 'months':
+      case 'years':
+        setCurrentMonth(format(firstDayNext, 'MMM-yyyy'));
+        break;
+    }
+  }, [firstDayCurrentMonth, selectedDate]);
 
   const togglePreviousDay = useCallback(() => toggleDate(-1, 'days'), [toggleDate]);
   const togglePreviousWeek = useCallback(() => toggleDate(-1, 'weeks'), [toggleDate]);
@@ -52,6 +69,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     selectedDate,
     currentMonth,
     firstDayCurrentMonth,
+    daysCurrentWeek,
     daysCurrentMonth,
     monthsCurrentYear,
     events,
@@ -73,6 +91,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     selectedDate,
     currentMonth,
     firstDayCurrentMonth,
+    daysCurrentWeek,
     daysCurrentMonth,
     monthsCurrentYear,
     events,

@@ -5,7 +5,8 @@ declare global {
     id: string;
     title: string;
     href?: string;
-    date: Date;
+    startDate: Date;
+    endDate: Date;
   };
 
   type AppProviderProps = {
@@ -17,6 +18,7 @@ declare global {
     selectedDate: Date;
     currentMonth: string;
     firstDayCurrentMonth: Date;
+    daysCurrentWeek: Date[];
     daysCurrentMonth: Date[];
     monthsCurrentYear: Date[];
     events: CalendarEvent[];
