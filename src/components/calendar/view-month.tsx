@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react'
+import React, { Fragment, useContext } from 'react'
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
@@ -11,7 +11,12 @@ import { format, isEqual, isSameDay, isSameMonth } from "date-fns";
 import _ from "lodash";
 import {classNames} from "../../helpers/utils.ts";
 
-export default function ViewMonth() {
+type ViewMonthProps = {
+  onAddEvent?: () => void;
+  onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
+};
+
+const ViewMonth: React.FC<ViewMonthProps> = ({ onAddEvent, onViewChange }) => {
   const {
     today,
     selectedDate,
@@ -25,6 +30,11 @@ export default function ViewMonth() {
     setCurrentMonth,
     setCurrentView,
   } = useContext(AppContext);
+
+  const handleViewChange = (view: 'year' | 'month' | 'week' | 'day') => {
+    setCurrentView(view);
+    onViewChange?.(view);
+  }
 
   return (
     <div className="lg:flex lg:h-full lg:flex-col bg-gray-100 w-full rounded-lg border shadow-md overflow-hidden">
@@ -86,7 +96,7 @@ export default function ViewMonth() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => setCurrentView('day')}
+                          onClick={() => handleViewChange('day')}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'block px-4 py-2 text-sm w-full text-left'
@@ -99,7 +109,7 @@ export default function ViewMonth() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => setCurrentView('week')}
+                          onClick={() => handleViewChange('week')}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'block px-4 py-2 text-sm w-full text-left'
@@ -112,7 +122,7 @@ export default function ViewMonth() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => setCurrentView('month')}
+                          onClick={() => handleViewChange('month')}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'block px-4 py-2 text-sm w-full text-left'
@@ -125,7 +135,7 @@ export default function ViewMonth() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => setCurrentView('year')}
+                          onClick={() => handleViewChange('year')}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'block px-4 py-2 text-sm w-full text-left'
@@ -141,6 +151,7 @@ export default function ViewMonth() {
             </Menu>
             <div className="ml-6 h-6 w-px bg-gray-300" />
             <button
+              onClick={onAddEvent}
               type="button"
               className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
@@ -167,6 +178,7 @@ export default function ViewMonth() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
+                        onClick={onAddEvent}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm w-full text-left'
@@ -199,7 +211,7 @@ export default function ViewMonth() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => setCurrentView('day')}
+                        onClick={() => handleViewChange('day')}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm w-full text-left'
@@ -212,7 +224,7 @@ export default function ViewMonth() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => setCurrentView('week')}
+                        onClick={() => handleViewChange('week')}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm w-full text-left'
@@ -225,7 +237,7 @@ export default function ViewMonth() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => setCurrentView('month')}
+                        onClick={() => handleViewChange('month')}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm w-full text-left'
@@ -238,7 +250,7 @@ export default function ViewMonth() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => setCurrentView('year')}
+                        onClick={() => handleViewChange('year')}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm w-full text-left'
@@ -380,3 +392,5 @@ export default function ViewMonth() {
     </div>
   )
 }
+
+export default ViewMonth

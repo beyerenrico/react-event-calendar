@@ -1,11 +1,16 @@
-import {Fragment, useContext} from 'react'
+import React, {Fragment, useContext} from 'react'
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, EllipsisHorizontalIcon } from '@heroicons/react/20/solid'
 import { Menu, Transition } from '@headlessui/react'
 import {classNames} from "../../helpers/utils.ts";
 import {AppContext} from "../../providers/app-provider.tsx";
 import {eachDayOfInterval, endOfMonth, endOfWeek, format, isEqual, isSameMonth, startOfWeek} from "date-fns";
 
-export default function ViewYear() {
+type ViewYearProps = {
+  onAddEvent?: () => void;
+  onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
+};
+
+const ViewYear: React.FC<ViewYearProps> = ({ onAddEvent, onViewChange }) => {
   const {
     today,
     firstDayCurrentMonth,
@@ -25,6 +30,11 @@ export default function ViewYear() {
       })
     }
   });
+
+  const handleViewChange = (view: 'year' | 'month' | 'week' | 'day') => {
+    setCurrentView(view);
+    onViewChange?.(view);
+  }
 
   return (
     <div className='bg-gray-100 rounded-md'>
@@ -46,7 +56,7 @@ export default function ViewYear() {
               onClick={() => {
                 setCurrentMonth(format(today, 'MMM-yyyy'));
                 setSelectedDate(today);
-                setCurrentView('month');
+                handleViewChange('month');
               }}
               type="button"
               className="hidden border-y border-gray-300 px-3.5 text-sm font-semibold text-gray-900 hover:bg-gray-50 focus:relative md:block"
@@ -87,7 +97,7 @@ export default function ViewYear() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => setCurrentView('day')}
+                          onClick={() => handleViewChange('day')}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'block px-4 py-2 text-sm'
@@ -100,7 +110,7 @@ export default function ViewYear() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => setCurrentView('week')}
+                          onClick={() => handleViewChange('week')}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'block px-4 py-2 text-sm'
@@ -113,7 +123,7 @@ export default function ViewYear() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => setCurrentView('month')}
+                          onClick={() => handleViewChange('month')}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'block px-4 py-2 text-sm'
@@ -126,7 +136,7 @@ export default function ViewYear() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => setCurrentView('year')}
+                          onClick={() => handleViewChange('year')}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'block px-4 py-2 text-sm'
@@ -142,6 +152,7 @@ export default function ViewYear() {
             </Menu>
             <div className="ml-6 h-6 w-px bg-gray-300" />
             <button
+              onClick={onAddEvent}
               type="button"
               className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
@@ -167,15 +178,15 @@ export default function ViewYear() {
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        onClick={onAddEvent}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm'
                         )}
                       >
                         Create event
-                      </a>
+                      </button>
                     )}
                   </Menu.Item>
                 </div>
@@ -186,7 +197,7 @@ export default function ViewYear() {
                         onClick={() => {
                           setCurrentMonth(format(today, 'MMM-yyyy'));
                           setSelectedDate(today);
-                          setCurrentView('month');
+                          handleViewChange('month');
                         }}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
@@ -202,7 +213,7 @@ export default function ViewYear() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => setCurrentView('day')}
+                        onClick={() => handleViewChange('day')}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm'
@@ -215,7 +226,7 @@ export default function ViewYear() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => setCurrentView('week')}
+                        onClick={() => handleViewChange('week')}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm'
@@ -228,7 +239,7 @@ export default function ViewYear() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => setCurrentView('month')}
+                        onClick={() => handleViewChange('month')}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm'
@@ -241,7 +252,7 @@ export default function ViewYear() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => setCurrentView('year')}
+                        onClick={() => handleViewChange('year')}
                         className={classNames(
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                           'block px-4 py-2 text-sm'
@@ -277,7 +288,7 @@ export default function ViewYear() {
                     onClick={() => {
                       setCurrentMonth(format(day, 'MMM-yyyy'));
                       setSelectedDate(day);
-                      setCurrentView('month');
+                      handleViewChange('month');
                     }}
                     key={dayIdx}
                     type="button"
@@ -309,3 +320,5 @@ export default function ViewYear() {
     </div>
   )
 }
+
+export default ViewYear

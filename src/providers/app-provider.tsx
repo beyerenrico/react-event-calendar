@@ -39,12 +39,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   }, [firstDayCurrentMonth]);
 
   const togglePreviousDay = useCallback(() => toggleDate(-1, 'days'), [toggleDate]);
-  const toggleNextDay = useCallback(() => toggleDate(1, 'days'), [toggleDate]);
   const togglePreviousWeek = useCallback(() => toggleDate(-1, 'weeks'), [toggleDate]);
-  const toggleNextWeek = useCallback(() => toggleDate(1, 'weeks'), [toggleDate]);
   const togglePreviousMonth = useCallback(() => toggleDate(-1, 'months'), [toggleDate]);
-  const toggleNextMonth = useCallback(() => toggleDate(1, 'months'), [toggleDate]);
   const togglePreviousYear = useCallback(() => toggleDate(-1, 'years'), [toggleDate]);
+  const toggleNextDay = useCallback(() => toggleDate(1, 'days'), [toggleDate]);
+  const toggleNextWeek = useCallback(() => toggleDate(1, 'weeks'), [toggleDate]);
+  const toggleNextMonth = useCallback(() => toggleDate(1, 'months'), [toggleDate]);
   const toggleNextYear = useCallback(() => toggleDate(1, 'years'), [toggleDate]);
 
   const contextValue = useMemo(() => ({
