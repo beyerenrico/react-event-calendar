@@ -62,7 +62,7 @@ function App() {
   return (
     <main className='w-full h-screen bg-slate-900 text-white flex justify-center items-center flex-col px-4 md:px-8 lg:px-24'>
       <h1 className='text-4xl font-bold mb-8'>React Event Calendar</h1>
-      <div className='max-w-screen-xl2 w-full min-h-[700px] max-h-[900px] overflow-y-scroll rounded-md'>
+      <div className='max-w-screen-xl w-full min-h-[700px] max-h-[900px] overflow-y-scroll rounded-md'>
         <ReactCalendar />
       </div>
     </main>
