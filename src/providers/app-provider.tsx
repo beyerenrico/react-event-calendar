@@ -24,6 +24,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [currentMonth, setCurrentMonth] = useState<string>(format(today, 'MMM-yyyy'));
   const [currentView, setCurrentView] = useState<'year' | 'month' | 'week' | 'day'>('month');
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [timeIndicatorOffset, setTimeIndicatorOffset] = useState<number>(0);
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
   const containerRef = useRef<HTMLDivElement>(null)
   const containerNavRef = useRef<HTMLDivElement>(null)
@@ -42,22 +43,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   });
 
   const toggleDate = useCallback((amount: number, type: 'days' | 'weeks' | 'months' | 'years') => {
-    const firstDayNext = add(firstDayCurrentMonth, { [type]: amount });
     const nextDay = add(selectedDate, { [type]: amount });
 
-    switch (type) {
-      case 'days':
-        setSelectedDate(nextDay);
-        break;
-      case 'weeks':
-        setSelectedDate(add(selectedDate, { [type]: amount }));
-        break;
-      case 'months':
-      case 'years':
-        setCurrentMonth(format(firstDayNext, 'MMM-yyyy'));
-        break;
-    }
-  }, [firstDayCurrentMonth, selectedDate]);
+    setSelectedDate(nextDay);
+    setCurrentMonth(format(nextDay, 'MMM-yyyy'));
+  }, [selectedDate]);
 
   const togglePreviousDay = useCallback(() => toggleDate(-1, 'days'), [toggleDate]);
   const togglePreviousWeek = useCallback(() => toggleDate(-1, 'weeks'), [toggleDate]);
@@ -73,12 +63,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
     if (containerRef.current === null || containerNavRef.current === null || containerOffsetRef.current === null) return;
 
-    containerRef.current.scrollTop = ((
-        containerRef.current.scrollHeight
-        - containerNavRef.current.offsetHeight
-        - containerOffsetRef.current.offsetHeight
-      ) * currentMinute)
-      / 1440
+    const offsetTop = (containerRef.current.scrollHeight - containerNavRef.current.offsetHeight) * currentMinute / 1440;
+
+    containerRef.current.scrollTop = offsetTop;
+    setTimeIndicatorOffset(offsetTop);
   }, [containerRef, containerNavRef, containerOffsetRef])
 
   const contextValue = useMemo(() => ({
@@ -94,6 +82,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     containerRef,
     containerNavRef,
     containerOffsetRef,
+    timeIndicatorOffset,
     calculateTrackPosition,
     togglePreviousDay,
     toggleNextDay,
@@ -107,6 +96,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setCurrentMonth,
     setCurrentView,
     setEvents,
+    setTimeIndicatorOffset,
   }), [
     today,
     selectedDate,
@@ -120,6 +110,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     containerRef,
     containerNavRef,
     containerOffsetRef,
+    timeIndicatorOffset,
     calculateTrackPosition,
     togglePreviousDay,
     toggleNextDay,
@@ -133,6 +124,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setCurrentMonth,
     setCurrentView,
     setEvents,
+    setTimeIndicatorOffset,
   ]);
 
   return (

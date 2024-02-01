@@ -5,10 +5,11 @@ import {classNames, dayHasEvents, eventsForDay} from "../../helpers/utils.ts";
 import CalendarHeader from "./calendar-header.tsx";
 
 type ViewMonthProps = {
+  onAddEvent?: () => void;
   onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
 };
 
-const ViewMonth: React.FC<ViewMonthProps> = ({ onViewChange }) => {
+const ViewMonth: React.FC<ViewMonthProps> = ({ onAddEvent, onViewChange }) => {
   const {
     today,
     selectedDate,
@@ -27,7 +28,7 @@ const ViewMonth: React.FC<ViewMonthProps> = ({ onViewChange }) => {
 
   return (
     <div className="lg:flex lg:h-full lg:flex-col bg-gray-100 w-full rounded-lg border shadow-md overflow-hidden">
-      <CalendarHeader />
+      <CalendarHeader onAddEvent={onAddEvent} onViewChange={onViewChange} />
       <div className="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">
         <div className="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">
           <div className="bg-white py-2">

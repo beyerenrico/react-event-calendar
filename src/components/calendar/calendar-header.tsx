@@ -310,9 +310,9 @@ const Headline = ({ currentView, firstDayCurrentMonth, selectedDate }: HeadlineP
         <div>
           <h1 className="text-base font-semibold leading-6 text-gray-900">
             <time dateTime={format(selectedDate, 'yyyy-MM-dd')} className="sm:hidden">
-              {format(selectedDate, 'MM dd, yyyy')}
+              {format(selectedDate, 'MMM dd, yyyy')}
             </time>
-            <time dateTime="2022-01-22" className="hidden sm:inline">
+            <time dateTime={format(selectedDate, 'yyyy-MM-dd')} className="hidden sm:inline">
               {format(selectedDate, 'MMMM dd, yyyy')}
             </time>
           </h1>
@@ -320,7 +320,6 @@ const Headline = ({ currentView, firstDayCurrentMonth, selectedDate }: HeadlineP
         </div>
       );
     case 'week':
-      return 'Week view';
     case 'month':
       return (
         <h1 className="text-base font-semibold leading-6 text-gray-900">

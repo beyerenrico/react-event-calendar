@@ -26,6 +26,7 @@ declare global {
     containerRef: React.RefObject<HTMLDivElement>;
     containerNavRef: React.RefObject<HTMLDivElement>;
     containerOffsetRef: React.RefObject<HTMLDivElement>;
+    timeIndicatorOffset: number;
     calculateTrackPosition: () => void;
     togglePreviousDay: () => void;
     toggleNextDay: () => void;
@@ -39,6 +40,7 @@ declare global {
     setCurrentMonth: (date: string) => void;
     setCurrentView: (view: 'year' | 'month' | 'week' | 'day') => void;
     setEvents: (events: CalendarEvent[]) => void;
+    setTimeIndicatorOffset: (offset: number) => void;
   };
 }
 

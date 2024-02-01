@@ -1,11 +1,16 @@
-import React, {useContext, useEffect} from "react";
+import React, {Fragment, useContext, useEffect} from "react";
 import {classNames, eventsForDay} from "../../helpers/utils.ts";
 import { AppContext } from "../../providers/app-provider.tsx";
 import { differenceInHours, format, isEqual } from "date-fns";
 import CalendarHeader from "./calendar-header.tsx";
 import MiniCalendar from "./mini-calendar.tsx";
 
-const ViewDay: React.FC = () => {
+type ViewDayProps = {
+  onAddEvent?: () => void;
+  onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
+};
+
+const ViewDay: React.FC<ViewDayProps> = ({ onAddEvent, onViewChange }) => {
   const {
     today,
     selectedDate,
@@ -14,6 +19,7 @@ const ViewDay: React.FC = () => {
     containerRef,
     containerNavRef,
     containerOffsetRef,
+    // timeIndicatorOffset,
     calculateTrackPosition,
     setSelectedDate,
     setCurrentMonth,
@@ -25,7 +31,7 @@ const ViewDay: React.FC = () => {
 
   return (
     <div className="flex h-full flex-col bg-gray-100 rounded-md">
-      <CalendarHeader />
+      <CalendarHeader onAddEvent={onAddEvent} onViewChange={onViewChange} />
       <div className="isolate flex flex-auto overflow-hidden bg-white">
         <div ref={containerRef} className="flex flex-auto flex-col overflow-auto">
           <div
@@ -60,25 +66,26 @@ const ViewDay: React.FC = () => {
             <div className="grid flex-auto grid-cols-1 grid-rows-1">
               {/* Horizontal lines */}
               <div
-                className="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100"
+                className="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100 relative"
                 style={{ gridTemplateRows: 'repeat(48, minmax(3.5rem, 1fr))' }}
               >
+                {/*<div className='absolute h-px bg-red-500 w-full' style={{ top: timeIndicatorOffset + 'px' }} />*/}
                 <div ref={containerOffsetRef} className="row-end-1 h-7"></div>
                 {Array.from({ length: 24 }).map((_, i) => (
-                  <>
+                  <Fragment key={i}>
                     <div>
                       <div className="sticky left-0 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
                         {i}:00
                       </div>
                     </div>
                     <div />
-                  </>
+                  </Fragment>
                 ))}
               </div>
 
               {/* Events */}
               <ol
-                className="col-start-1 col-end-2 row-start-1 grid grid-cols-1"
+                className="col-start-1 col-end-2 row-start-1 grid"
                 style={{ gridTemplateRows: '1.75rem repeat(288, minmax(0, 1fr)) auto' }}
               >
                 {eventsForDay(selectedDate, events).map((event) => (

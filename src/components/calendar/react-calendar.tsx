@@ -12,19 +12,31 @@ type ReactCalendarProps = {
 
 const ReactCalendar: React.FC<ReactCalendarProps> = ({ onAddEvent, onViewChange }) => {
   const { currentView } = useContext(AppContext);
+  let Slot;
 
   switch (currentView) {
     case 'year':
-      return <ViewYear onViewChange={onViewChange} />;
+      Slot = () => <ViewYear onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      break;
     case 'month':
-      return <ViewMonth onViewChange={onViewChange} />;
+      Slot = () => <ViewMonth onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      break;
     case 'week':
-      return <ViewWeek onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      Slot = () => <ViewWeek onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      break;
     case 'day':
-      return <ViewDay />;
+      Slot = () => <ViewDay onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      break;
     default:
-      return <ViewMonth onViewChange={onViewChange} />;
+      Slot = () => <ViewMonth onAddEvent={onAddEvent} onViewChange={onViewChange} />;
+      break;
   }
+
+  return (
+    <div className='h-full'>
+      <Slot />
+    </div>
+  )
 }
 
 export default ReactCalendar

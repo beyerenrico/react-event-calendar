@@ -5,10 +5,11 @@ import { eachDayOfInterval, endOfMonth, endOfWeek, format, isEqual, isSameMonth,
 import CalendarHeader from "./calendar-header.tsx";
 
 type ViewYearProps = {
+  onAddEvent?: () => void;
   onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
 };
 
-const ViewYear: React.FC<ViewYearProps> = ({ onViewChange }) => {
+const ViewYear: React.FC<ViewYearProps> = ({ onAddEvent, onViewChange }) => {
   const {
     today,
     monthsCurrentYear,
@@ -33,7 +34,7 @@ const ViewYear: React.FC<ViewYearProps> = ({ onViewChange }) => {
 
   return (
     <div className='bg-gray-100 rounded-md'>
-      <CalendarHeader />
+      <CalendarHeader onAddEvent={onAddEvent} onViewChange={onViewChange} />
       <div className="bg-white">
         <div className="mx-auto grid max-w-3xl grid-cols-1 gap-x-8 gap-y-16 px-4 py-16 sm:grid-cols-2 sm:px-6 xl:max-w-none xl:grid-cols-3 xl:px-8 2xl:grid-cols-4">
           {daysOfMonthsCurrentYear.map((month, id) => (
