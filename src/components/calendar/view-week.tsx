@@ -7,7 +7,7 @@ import {classNames, eventsForDay} from "../../helpers/utils.ts";
 import {MediaQuery} from "../../enums/media-queries.ts";
 
 type ViewWeekProps = {
-  onAddEvent?: () => void;
+  onAddEvent?: (options?: AddEventOptions) => void;
   onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
 };
 

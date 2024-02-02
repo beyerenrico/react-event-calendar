@@ -6,7 +6,7 @@ import ViewWeek from "./view-week.tsx";
 import ViewDay from "./view-day.tsx";
 
 type ReactCalendarProps = {
-  onAddEvent?: () => void;
+  onAddEvent?: (options?: AddEventOptions) => void;
   onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
 };
 

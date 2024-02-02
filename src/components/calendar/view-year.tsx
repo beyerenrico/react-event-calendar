@@ -5,7 +5,7 @@ import { eachDayOfInterval, endOfMonth, endOfWeek, format, isEqual, isSameMonth,
 import CalendarHeader from "./calendar-header.tsx";
 
 type ViewYearProps = {
-  onAddEvent?: () => void;
+  onAddEvent?: (options?: AddEventOptions) => void;
   onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
 };
 

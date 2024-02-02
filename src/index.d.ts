@@ -42,6 +42,12 @@ declare global {
     setEvents: (events: CalendarEvent[]) => void;
     setTimeIndicatorOffset: (offset: number) => void;
   };
+
+  type AddEventOptions = {
+    columnIndex?: number;
+    rowIndex?: number;
+    date?: Date;
+  }
 }
 
 export {};

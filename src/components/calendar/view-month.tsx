@@ -5,7 +5,7 @@ import {classNames, dayHasEvents, eventsForDay} from "../../helpers/utils.ts";
 import CalendarHeader from "./calendar-header.tsx";
 
 type ViewMonthProps = {
-  onAddEvent?: () => void;
+  onAddEvent?: (options?: AddEventOptions) => void;
   onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
 };
 

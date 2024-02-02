@@ -7,7 +7,7 @@ import {classNames} from "../../helpers/utils.ts";
 import {AppContext} from "../../providers/app-provider.tsx";
 
 type CalendarHeaderProps = {
-  onAddEvent?: () => void;
+  onAddEvent?: (options?: AddEventOptions) => void;
   onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
 };
 
@@ -179,7 +179,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({onAddEvent, onViewChange
           </Menu>
           <div className="ml-6 h-6 w-px bg-gray-300" />
           <button
-            onClick={onAddEvent}
+            onClick={() => onAddEvent?.()}
             type="button"
             className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
@@ -206,7 +206,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({onAddEvent, onViewChange
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      onClick={onAddEvent}
+                      onClick={() => onAddEvent?.()}
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block px-4 py-2 text-sm w-full text-left'

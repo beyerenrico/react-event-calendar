@@ -6,7 +6,7 @@ import CalendarHeader from "./calendar-header.tsx";
 import MiniCalendar from "./mini-calendar.tsx";
 
 type ViewDayProps = {
-  onAddEvent?: () => void;
+  onAddEvent?: (options?: AddEventOptions) => void;
   onViewChange?: (view: 'year' | 'month' | 'week' | 'day') => void;
 };
 
@@ -19,7 +19,6 @@ const ViewDay: React.FC<ViewDayProps> = ({ onAddEvent, onViewChange }) => {
     containerRef,
     containerNavRef,
     containerOffsetRef,
-    // timeIndicatorOffset,
     calculateTrackPosition,
     setSelectedDate,
     setCurrentMonth,
@@ -69,16 +68,23 @@ const ViewDay: React.FC<ViewDayProps> = ({ onAddEvent, onViewChange }) => {
                 className="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100 relative"
                 style={{ gridTemplateRows: 'repeat(48, minmax(3.5rem, 1fr))' }}
               >
-                {/*<div className='absolute h-px bg-red-500 w-full' style={{ top: timeIndicatorOffset + 'px' }} />*/}
                 <div ref={containerOffsetRef} className="row-end-1 h-7"></div>
                 {Array.from({ length: 24 }).map((_, i) => (
                   <Fragment key={i}>
-                    <div>
+                    <button
+                      type="button"
+                      onClick={() => onAddEvent?.()}
+                      className="hover:bg-gray-100 cursor-pointer"
+                    >
                       <div className="sticky left-0 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
                         {i}:00
                       </div>
-                    </div>
-                    <div />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onAddEvent?.()}
+                      className="hover:bg-gray-100 cursor-pointer"
+                    />
                   </Fragment>
                 ))}
               </div>
