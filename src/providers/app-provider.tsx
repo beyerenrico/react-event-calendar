@@ -43,11 +43,18 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   });
 
   const toggleDate = useCallback((amount: number, type: 'days' | 'weeks' | 'months' | 'years') => {
-    const nextDay = add(selectedDate, { [type]: amount });
-
-    setSelectedDate(nextDay);
-    setCurrentMonth(format(nextDay, 'MMM-yyyy'));
-  }, [selectedDate]);
+    switch (type) {
+      case 'years':
+      case 'months':
+        setCurrentMonth(format(add(firstDayCurrentMonth, { [type]: amount }), 'MMM-yyyy'));
+        break;
+      case 'weeks':
+      case 'days':
+        setCurrentMonth(format(add(selectedDate, { [type]: amount }), 'MMM-yyyy'));
+        setSelectedDate(add(selectedDate, { [type]: amount }));
+        break;
+    }
+  }, [firstDayCurrentMonth, selectedDate]);
 
   const togglePreviousDay = useCallback(() => toggleDate(-1, 'days'), [toggleDate]);
   const togglePreviousWeek = useCallback(() => toggleDate(-1, 'weeks'), [toggleDate]);
