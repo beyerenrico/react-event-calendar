@@ -3,8 +3,9 @@ import React, {Fragment, useContext, useEffect} from "react";
 import { useWindowSize } from 'usehooks-ts'
 import {AppContext} from "../../providers/app-provider.tsx";
 import {format, isEqual, differenceInHours} from "date-fns";
-import {classNames, eventsForDay} from "../../helpers/utils.ts";
-import {MediaQuery} from "../../enums/media-queries.ts";
+import {classNames, eventsForDay} from "@/helpers/utils.ts";
+import {MediaQuery} from "@/enums/media-queries.ts";
+import EventTile from "./event-tile.tsx";
 
 type ViewWeekProps = {
   onAddEvent?: (options?: AddEventOptions) => void;
@@ -101,7 +102,7 @@ const ViewWeek: React.FC<ViewWeekProps> = ({ onAddEvent, onViewChange }) => {
               </div>
 
               {/* Vertical lines */}
-              <div className="col-start-1 col-end-2 row-start-1 hidden grid-cols-7 grid-rows-1 divide-x divide-gray-100 sm:grid sm:grid-cols-7">
+              <div className="col-start-1 col-end-2 row-start-1 hidden grid-cols-7 grid-rows-1 divide-x divide-gray-100 sm:grid sm:grid-cols-7 pointer-events-none">
                 <div className="col-start-1 row-span-full" />
                 <div className="col-start-2 row-span-full" />
                 <div className="col-start-3 row-span-full" />
@@ -113,9 +114,7 @@ const ViewWeek: React.FC<ViewWeekProps> = ({ onAddEvent, onViewChange }) => {
               </div>
 
               {/* Events */}
-              <div
-                className="col-start-1 col-end-2 row-start-1 grid sm:grid-cols-7 sm:pr-8"
-              >
+              <div className="col-start-1 col-end-2 row-start-1 grid sm:grid-cols-7 sm:pr-8 pointer-events-none">
                 {daysCurrentWeek.map((day, index) => {
                   if (width < MediaQuery.sm) {
                     if (!isEqual(day, selectedDate)) {
@@ -125,11 +124,10 @@ const ViewWeek: React.FC<ViewWeekProps> = ({ onAddEvent, onViewChange }) => {
 
                   // TODO: Find a way to correctly autosize the grid elements, so they take up space if they do not collide with other events
 
-
                   return (
                     <ol
                       key={index}
-                      className="relative mt-px row-start-1 row-end-2 grid"
+                      className="relative mt-px row-start-1 row-end-2 grid pointer-events-none"
                       style={{
                         gridColumnStart: width < MediaQuery.sm ? 1 : index + 1,
                         gridTemplateRows: '1.75rem repeat(288, minmax(0, 1fr)) auto'
@@ -139,9 +137,7 @@ const ViewWeek: React.FC<ViewWeekProps> = ({ onAddEvent, onViewChange }) => {
                         <li
                           key={event.id}
                           className="relative mt-px flex"
-                          style={{
-                            gridRow: `${(Number(format(event.startDate, 'H')) * 12) + 2} / span ${Number(differenceInHours(event.endDate, event.startDate)) * 12}`,
-                          }}
+                          style={{ gridRow: `${(Number(format(event.startDate, 'H')) * 12) + 2} / span ${Number(differenceInHours(event.endDate, event.startDate)) * 12}` }}
                         >
                           <EventTile event={event} />
                         </li>

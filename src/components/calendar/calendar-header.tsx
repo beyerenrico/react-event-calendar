@@ -3,7 +3,7 @@ import {format} from "date-fns";
 import {ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, EllipsisHorizontalIcon} from "@heroicons/react/20/solid";
 import {Menu, Transition} from "@headlessui/react";
 import _ from "lodash";
-import {classNames} from "../../helpers/utils.ts";
+import {classNames} from "@/helpers/utils.ts";
 import {AppContext} from "../../providers/app-provider.tsx";
 
 type CalendarHeaderProps = {
