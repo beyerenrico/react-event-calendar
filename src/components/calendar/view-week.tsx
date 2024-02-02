@@ -85,20 +85,35 @@ const ViewWeek: React.FC<ViewWeekProps> = ({ onAddEvent, onViewChange }) => {
             <div className="grid flex-auto grid-cols-1 grid-rows-1">
               {/* Horizontal lines */}
               <div
-                className="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100"
+                className="col-start-1 col-end-2 row-start-1 grid pr-8 divide-y divide-gray-100"
                 style={{ gridTemplateRows: 'repeat(48, minmax(3.5rem, 1fr))' }}
               >
-                <div ref={containerOffsetRef} className="row-end-1 h-7"></div>
-                {Array.from({ length: 24 }).map((_, i) => (
-                  <Fragment key={i}>
-                    <div>
-                      <div className="sticky left-0 z-20 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
-                        {i}:00
-                      </div>
+                <div ref={containerOffsetRef} className="row-end-1 col-start-1 col-end-[8] h-7 pointer-events-none"></div>
+                {Array.from({ length: 7 }).map((_, columnIndex) => {
+                  return (
+                    <div className='grid grid-cols-1 row-span-full divide-y divide-gray-100' style={{ gridTemplateRows: 'repeat(48, minmax(3.5rem, 1fr))' }}>
+                      {Array.from({ length: 48 }).map((_, rowIndex) => (
+                        <Fragment key={rowIndex}>
+                          <button
+                            type="button"
+                            onClick={() => onAddEvent?.({
+                              columnIndex: columnIndex,
+                              rowIndex: rowIndex,
+                              date: new Date(daysCurrentWeek[columnIndex].setHours(rowIndex / 2, (rowIndex % 2) * 30, 0, 0))
+                            })}
+                            className="hover:bg-gray-100"
+                          >
+                            {columnIndex === 0 && rowIndex % 2 === 0 && (
+                              <div className="sticky left-0 z-20 -ml-14 -mt-8 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
+                                {rowIndex / 2}:00
+                              </div>
+                            )}
+                          </button>
+                        </Fragment>
+                      ))}
                     </div>
-                    <div />
-                  </Fragment>
-                ))}
+                  )
+                })}
               </div>
 
               {/* Vertical lines */}
