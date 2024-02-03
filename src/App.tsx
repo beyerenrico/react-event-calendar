@@ -11,8 +11,8 @@ function App() {
         id: '1',
         title: 'Comicon Düsseldorf',
         href: '#',
-        startDate: new Date('2024-01-27 06:00:00'),
-        endDate: new Date('2024-01-27 18:00:00')
+        startDate: new Date('2024-01-22 07:30:00'),
+        endDate: new Date('2024-01-22 18:00:00')
       },
       {
         id: '2',
@@ -51,10 +51,10 @@ function App() {
       },
       {
         id: '7',
-        title: 'Yeeeeet!!',
+        title: 'Las Vegas Cosplay Expo',
         href: '#',
-        startDate: new Date('2024-02-01 14:00:00'),
-        endDate: new Date('2024-02-01 16:00:00')
+        startDate: new Date('2024-02-03 18:00:00'),
+        endDate: new Date('2024-02-03 22:00:00')
       }
     ]);
   }, [setEvents]);

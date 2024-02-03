@@ -22,6 +22,8 @@ declare global {
     daysCurrentMonth: Date[];
     monthsCurrentYear: Date[];
     events: CalendarEvent[];
+    eventsCurrentWeek: CalendarEvent[];
+    eventsCurrentWeekSortedByDay: CalendarEvent[][];
     currentView: 'year' | 'month' | 'week' | 'day';
     containerRef: React.RefObject<HTMLDivElement>;
     containerNavRef: React.RefObject<HTMLDivElement>;

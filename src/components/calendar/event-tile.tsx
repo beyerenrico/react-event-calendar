@@ -2,10 +2,12 @@ import {format} from "date-fns";
 import React from "react";
 
 type EventTileProps = {
-  event: CalendarEvent;
+  event: CalendarEvent | undefined;
 };
 
 const EventTile: React.FC<EventTileProps> = ({ event }) => {
+  if (!event) return null;
+
   return (
     <a
       href={event.href}

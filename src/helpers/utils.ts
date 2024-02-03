@@ -15,3 +15,9 @@ export function eventsForDay(day: Date, events: CalendarEvent[]) {
     return isSameDay(day, event.startDate);
   })
 }
+
+export function round(value: number, step: number) {
+  step || (step = 1.0);
+  const inv = 1.0 / step;
+  return Math.round(value * inv) / inv;
+}

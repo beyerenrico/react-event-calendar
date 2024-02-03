@@ -22,7 +22,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const today = startOfToday();
   const [selectedDate, setSelectedDate] = useState<Date>(today);
   const [currentMonth, setCurrentMonth] = useState<string>(format(today, 'MMM-yyyy'));
-  const [currentView, setCurrentView] = useState<'year' | 'month' | 'week' | 'day'>('month');
+  const [currentView, setCurrentView] = useState<'year' | 'month' | 'week' | 'day'>('day');
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [timeIndicatorOffset, setTimeIndicatorOffset] = useState<number>(0);
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
@@ -41,6 +41,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     start: new Date(firstDayCurrentMonth.getFullYear(), 0, 1),
     end: new Date(firstDayCurrentMonth.getFullYear(), 11, 31)
   });
+  const eventsCurrentWeek = useMemo(() => events.filter(event => daysCurrentWeek.some(day => day.toDateString() === event.startDate.toDateString())), [events, daysCurrentWeek]);
+  const eventsCurrentWeekSortedByDay = useMemo(() => {
+    return daysCurrentWeek.map((day) => {
+      return eventsCurrentWeek.filter(event => event.startDate.toDateString() === day.toDateString()).sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
+    })
+  }, [eventsCurrentWeek, daysCurrentWeek]);
 
   const toggleDate = useCallback((amount: number, type: 'days' | 'weeks' | 'months' | 'years') => {
     switch (type) {
@@ -85,6 +91,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     daysCurrentMonth,
     monthsCurrentYear,
     events,
+    eventsCurrentWeek,
+    eventsCurrentWeekSortedByDay,
     currentView,
     containerRef,
     containerNavRef,
@@ -113,6 +121,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     daysCurrentMonth,
     monthsCurrentYear,
     events,
+    eventsCurrentWeek,
+    eventsCurrentWeekSortedByDay,
     currentView,
     containerRef,
     containerNavRef,
